@@ -1,0 +1,58 @@
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: study-rag-backend
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - .:/app
+
+    env_file:
+      - .env
+
+    depends_on:
+      - postgres
+      - chromadb
+
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+
+    container_name: study-rag-postgres
+
+    environment:
+      POSTGRES_DB: study_rag
+      POSTGRES_USER: study_user
+      POSTGRES_PASSWORD: study_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    restart: unless-stopped
+
+  chromadb:
+    image: chromadb/chroma:latest
+
+    container_name: study-rag-chromadb
+
+    ports:
+      - "8001:8000"
+
+    volumes:
+      - chroma_data:/chroma/chroma
+
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  chroma_data:
