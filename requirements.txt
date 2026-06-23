@@ -13,7 +13,7 @@ chromadb==1.0.12
 openai==1.84.0
 
 langchain==0.3.25
-langchain-openai==0.3.19
+langchain-openai==0.3.19 
 
 sentence-transformers==4.1.0
 
@@ -22,3 +22,12 @@ pymupdf==1.26.0
 pydantic==2.11.5
 
 httpx==0.28.1
+
+python-jose[cryptography]
+passlib[bcrypt]
+
+email-validator==2.2.0
+
+bcrypt==4.0.1
+
+aiosmtplib==3.0.2
