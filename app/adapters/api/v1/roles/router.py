@@ -10,7 +10,7 @@ from app.infrastructure.persistence.models.role_model import RoleModel
 from app.infrastructure.persistence.models.user_model import UserModel
 from app.infrastructure.security.permissions.auth_dependencies import get_current_user
 
-router =  ApiRouter(
+router =  APIRouter(
     prefix="/roles",
     tags=["Roles"],
 )
