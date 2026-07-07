@@ -75,7 +75,7 @@ Implementaciones concretas de persistencia, autenticación, almacenamiento, RAG 
 3. Kevin Javier Velazquez
 4. Kevin Alejandro Chuc
 5. Ramon Avila Mayo
-6. Joel
+6. Joel Isaac Rodriguez Pech
 
 El proyecto utiliza un flujo de trabajo basado en Git Flow simplificado.
 
