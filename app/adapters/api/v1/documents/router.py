@@ -81,3 +81,92 @@ async def upload_document(
         "message": "Documento subido correctamente",
         "document": serialize_document(document)
     }
+    
+@router.get("/")
+async def get_my_documents(
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user)
+):
+    documents = db.query(DocumentModel).filter(
+        DocumentModel.user_id == current_user.id
+    ).all()
+
+    return [serialize_document(document) for document in documents]
+
+
+@router.get("/{document_id}")
+async def get_document(
+    document_id: str,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user)
+):
+    document = db.query(DocumentModel).filter(
+        DocumentModel.id == document_id
+    ).first()
+
+    if not document:
+        raise HTTPException(status_code=404, detail="Documento no encontrado")
+
+    if document.user_id != current_user.id and current_user.role.name != "admin":
+        raise HTTPException(status_code=403, detail="No tienes permisos")
+
+    return serialize_document(document)
+
+
+@router.patch("/{document_id}")
+async def update_document(
+    document_id: str,
+    data: UpdateDocumentDTO,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user)
+):
+    document = db.query(DocumentModel).filter(
+        DocumentModel.id == document_id
+    ).first()
+
+    if not document:
+        raise HTTPException(status_code=404, detail="Documento no encontrado")
+
+    if document.user_id != current_user.id and current_user.role.name != "admin":
+        raise HTTPException(status_code=403, detail="No tienes permisos")
+
+    if data.title is not None:
+        document.title = data.title
+
+    if data.status is not None:
+        document.status = data.status
+
+    db.commit()
+    db.refresh(document)
+
+    return {
+        "message": "Documento actualizado correctamente",
+        "document": serialize_document(document)
+    }
+
+#eliminar documento
+@router.delete("/{document_id}")
+async def delete_document(
+    document_id: str,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user)
+):
+    document = db.query(DocumentModel).filter(
+        DocumentModel.id == document_id
+    ).first()
+
+    if not document:
+        raise HTTPException(status_code=404, detail="Documento no encontrado")
+
+    if document.user_id != current_user.id and current_user.role.name != "admin":
+        raise HTTPException(status_code=403, detail="No tienes permisos")
+
+    if os.path.exists(document.file_path):
+        os.remove(document.file_path)
+
+    db.delete(document)
+    db.commit()
+
+    return {
+        "message": "Documento eliminado correctamente"
+    }
