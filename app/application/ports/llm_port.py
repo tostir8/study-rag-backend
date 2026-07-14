@@ -16,6 +16,7 @@ class LLMPort(ABC):
         prompt: str,
         system_prompt: str | None = None,
         temperature: float = 0.2,
+        max_tokens: int = 2048,
     ) -> str:
         """
         Generates a response using a language model.
@@ -24,6 +25,7 @@ class LLMPort(ABC):
             prompt: User prompt.
             system_prompt: Optional system instructions.
             temperature: Sampling temperature.
+            max_tokens: Maximum number of tokens to generate.
 
         Returns:
             Generated text.
