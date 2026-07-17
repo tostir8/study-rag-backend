@@ -2,6 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import Boolean
 from sqlalchemy import DateTime
+from sqlalchemy import ForeignKey
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -19,6 +20,13 @@ class DocumentModel(Base):
     id: Mapped[str] = mapped_column(
         String(36),
         primary_key=True,
+    )
+
+    study_room_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("study_rooms.id"),
+        nullable=False,
+        index=True,
     )
 
     filename: Mapped[str] = mapped_column(

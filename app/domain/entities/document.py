@@ -6,9 +6,14 @@ from datetime import datetime
 class Document:
     """
     Domain entity representing an indexed document.
+
+    Every document belongs to a Study Room
+    (tenant isolation).
     """
 
     id: str
+
+    study_room_id: str
 
     filename: str
 

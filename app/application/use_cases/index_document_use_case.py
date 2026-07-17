@@ -16,7 +16,7 @@ class IndexDocumentUseCase:
 
     Pipeline:
 
-    PDF
+    Study Room
         ↓
     Persist document metadata
         ↓
@@ -46,6 +46,8 @@ class IndexDocumentUseCase:
     def execute(
         self,
         document_id: str,
+        study_room_id: str,
+        filename: str,
         pdf_path: str,
     ) -> None:
         """
@@ -54,16 +56,23 @@ class IndexDocumentUseCase:
 
         document = Document(
             id=document_id,
-            filename=pdf_path.split("/")[-1],
+            study_room_id=study_room_id,
+            filename=filename,
             file_path=pdf_path,
             created_at=datetime.utcnow(),
         )
 
-        self._document_repository.save(document)
+        self._document_repository.save(
+            document,
+        )
 
-        text = self._loader.load(pdf_path)
+        text = self._loader.load(
+            pdf_path,
+        )
 
-        chunks = self._chunker.split(text)
+        chunks = self._chunker.split(
+            text,
+        )
 
         embeddings = [
             self._embedding_provider.embed(chunk)
@@ -73,6 +82,7 @@ class IndexDocumentUseCase:
         metadata = [
             {
                 "document_id": document_id,
+                "study_room_id": study_room_id,
                 "chunk": index,
             }
             for index in range(len(chunks))

@@ -10,10 +10,12 @@ from app.infrastructure.ai.embeddings.sentence_transformer_provider import (
 from app.infrastructure.ai.llm.groq_provider import GroqProvider
 from app.infrastructure.ai.rag.prompt_builder import PromptBuilder
 from app.infrastructure.ai.rag.retriever import Retriever
+from app.infrastructure.database.repositories.study_room_repository import (
+    StudyRoomRepository,
+)
 from app.infrastructure.vector_store.chroma_vector_store import (
     ChromaVectorStore,
 )
-
 
 router = APIRouter(
     prefix="/chat",
@@ -25,13 +27,24 @@ class QuestionRequest(BaseModel):
     question: str
 
 
-@router.post("/ask")
+@router.post("/study-room/{study_room_id}/ask")
 def ask_question(
+    study_room_id: str,
     request: QuestionRequest,
 ):
     """
-    Answers a question using the indexed documents.
+    Answers a question using only the documents
+    belonging to the specified Study Room.
     """
+
+    room = StudyRoomRepository().get_by_id(
+        study_room_id,
+    )
+
+    if room is None:
+        return {
+            "message": "Study Room not found.",
+        }
 
     vector_store = ChromaVectorStore()
 
@@ -55,10 +68,12 @@ def ask_question(
     )
 
     answer = use_case.execute(
-        request.question,
+        question=request.question,
+        study_room_id=study_room_id,
     )
 
     return {
+        "study_room_id": study_room_id,
         "question": request.question,
         "answer": answer,
     }

@@ -1,8 +1,13 @@
 from fastapi import FastAPI
 
-from app.adapters.http.routes.chat_routes import router as chat_router
+from app.adapters.http.routes.chat_routes import (
+    router as chat_router,
+)
 from app.adapters.http.routes.document_routes import (
     router as document_router,
+)
+from app.adapters.http.routes.study_room_routes import (
+    router as study_room_router,
 )
 from app.config.settings import get_settings
 
@@ -15,6 +20,7 @@ app = FastAPI(
 )
 
 app.include_router(document_router)
+app.include_router(study_room_router)
 app.include_router(chat_router)
 
 

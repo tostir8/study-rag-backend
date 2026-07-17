@@ -24,6 +24,7 @@ class DocumentRepository(DocumentRepositoryPort):
 
             model = DocumentModel(
                 id=document.id,
+                study_room_id=document.study_room_id,
                 filename=document.filename,
                 file_path=document.file_path,
                 created_at=document.created_at,
@@ -55,6 +56,7 @@ class DocumentRepository(DocumentRepositoryPort):
 
             return Document(
                 id=model.id,
+                study_room_id=model.study_room_id,
                 filename=model.filename,
                 file_path=model.file_path,
                 created_at=model.created_at,
@@ -86,6 +88,7 @@ class DocumentRepository(DocumentRepositoryPort):
             return [
                 Document(
                     id=model.id,
+                    study_room_id=model.study_room_id,
                     filename=model.filename,
                     file_path=model.file_path,
                     created_at=model.created_at,
@@ -101,9 +104,6 @@ class DocumentRepository(DocumentRepositoryPort):
         self,
         document_id: str,
     ) -> None:
-        """
-        Deletes a document from PostgreSQL.
-        """
 
         session = SessionLocal()
 
