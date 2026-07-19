@@ -8,7 +8,9 @@ from app.infrastructure.ai.embeddings.sentence_transformer_provider import (
     SentenceTransformerEmbeddingProvider,
 )
 from app.infrastructure.ai.llm.groq_provider import GroqProvider
-from app.infrastructure.ai.rag.prompt_builder import PromptBuilder
+from app.infrastructure.ai.prompts.chat_prompt_builder import (
+    ChatPromptBuilder,
+)
 from app.infrastructure.ai.rag.retriever import Retriever
 from app.infrastructure.database.repositories.study_room_repository import (
     StudyRoomRepository,
@@ -57,7 +59,7 @@ def ask_question(
         vector_store=vector_store,
     )
 
-    prompt_builder = PromptBuilder()
+    prompt_builder = ChatPromptBuilder()
 
     llm = GroqProvider()
 
