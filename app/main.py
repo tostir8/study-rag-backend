@@ -6,6 +6,9 @@ from app.adapters.http.routes.chat_routes import (
 from app.adapters.http.routes.document_routes import (
     router as document_router,
 )
+from app.adapters.http.routes.flashcard_routes import (
+    router as flashcard_router,
+)
 from app.adapters.http.routes.study_room_routes import (
     router as study_room_router,
 )
@@ -22,6 +25,7 @@ app = FastAPI(
 app.include_router(document_router)
 app.include_router(study_room_router)
 app.include_router(chat_router)
+app.include_router(flashcard_router)
 
 
 @app.get("/")
