@@ -39,3 +39,9 @@ versions/
 Thumbs.db
 
 !.env.example
+
+# Uploaded documents
+storage/uploads/
+
+# Keep directory
+!storage/uploads/.gitkeep

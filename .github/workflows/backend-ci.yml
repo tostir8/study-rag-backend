@@ -16,6 +16,23 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      APP_NAME: Study RAG Backend
+
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: study_rag
+      POSTGRES_USER: study_user
+      POSTGRES_PASSWORD: study_password
+
+      CHROMA_HOST: localhost
+      CHROMA_PORT: "8000"
+
+      LLM_PROVIDER: groq
+      LLM_MODEL: llama-3.3-70b-versatile
+
+      GROQ_API_KEY: fake-api-key-for-ci
+
     steps:
 
       - name: Checkout
